@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+    <head> 
+        <title></title> 
+ 
+        <script type="text/javascript"> 
+            Array.prototype.shuffle = function() { 
+                var s = []; 
+                while (this.length) s.push(this.splice(Math.random() * this.length, 1)); 
+                while (s.length) this.push(s.pop()); 
+                return this; 
+            } 
+            //preload the images 
+            var picData = [ 
+                ['nat1.png','t-shirt 1','artist 1','url_1'], 
+                ['nat2.png','t-shirt 2','artist 2','url_2'], 
+                ['nat3.png','t-shirt 3','artist 3','url_3'], 
+                ['nat4.png','t-shirt 4','artist 4','url_4'], 
+                ['nat5.png','t-shirt 5','artist 5','url_5'], 
+                ['nat6.png','t-shirt 6','artist 6','url_6']]; 
+            picO = new Array(); 
+            randIndex = new Array();  //array of random indexes 
+            for(i=0; i < picData.length; i++){ 
+                picO[i] = new Image(); 
+                picO[i].src = picData[i][0]; 
+                randIndex.push(i); 
+            } 
+            randIndex.shuffle(); 
+            window.onload=function(){ 
+                var mainImgs = document.getElementById('main_image').getElementsByTagName('img'); 
+                var otherImgs = document.getElementById('other_image').getElementsByTagName('img'); 
+                var tshirtDivs = getElementsByClassName(document, 'div', 'tshirtName'); 
+                var artistDivs = getElementsByClassName(document, 'div', 'artistName'); 
+                //assign the main image data 
+                for(i=0; i < mainImgs.length; i++){ 
+                    mainImgs[i].src = picO[randIndex[i]].src; //assign a random image 
+                    mainImgs[i].parentNode.href = picData[randIndex[i]][3]; 
+                    tshirtDivs[i].innerHTML = picData[randIndex[i]][1]; 
+                    artistDivs[i].innerHTML = picData[randIndex[i]][2]; 
+                } 
+                //assign the other image data 
+                for(i=mainImgs.length; i < otherImgs.length+mainImgs.length; i++){ 
+                    otherImgs[i-mainImgs.length].src = picO[randIndex[i]].src; 
+                    otherImgs[i-mainImgs.length].parentNode.href = picData[randIndex[i]][3]; 
+                    tshirtDivs[i].innerHTML = picData[randIndex[i]][1]; 
+                    artistDivs[i].innerHTML = picData[randIndex[i]][2]; 
+                } 
+            } 
+            //------------------------------------------------------------------------- 
+            function getElementsByClassName(oElm, strTagName, strClassName){ 
+                var arrElements = (strTagName == "*" && oElm.all)? oElm.all : oElm.getElementsByTagName(strTagName); 
+                var arrReturnElements = new Array(); 
+                strClassName = strClassName.replace(/-/g, "\\-"); 
+                var oRegExp = new RegExp("(^|\\s)" + strClassName + "(\\s|$)"); 
+                var oElement; 
+                for(var i=0; i<arrElements.length; i++){ 
+                    oElement = arrElements[i]; 
+                    if(oRegExp.test(oElement.className)){ 
+                        arrReturnElements.push(oElement); 
+                    } 
+                } 
+                return (arrReturnElements) 
+            } 
+        </script> 
+    </head> 
+    <body> 
+	<div style="float:left;width:500px;">
+        <div id="main_image"> 
+            <a href=""><img src="" alt="" /></a>
+                <div class="tshirtName"></div> 
+                <div class="artistName"></div> 
+            
+			<a href=""><img src="" alt="" /></a>
+                <div class="tshirtName"></div> 
+                <div class="artistName"></div> 
+              </div>
+</div>		
+       <div style="float:left;width:500px;">
+	   <div id="other_image"> 
+                <a href=""><img src="" alt="" /></a>
+                <div class="tshirtName"></div> 
+                <div class="artistName"></div>
+                <a href=""><img src="" alt="" /></a>
+                <div class="tshirtName"></div> 
+                <div class="artistName"></div>
+        </div> 
+		</div>
+    </body> 
+</html>
